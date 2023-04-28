@@ -1,3 +1,7 @@
+CREATE DATABASE workers_db;
+
+USE workers_db;
+
 CREATE TABLE department (
     id INT PRIMARY KEY,
     name VARCHAR(30)
