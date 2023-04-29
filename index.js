@@ -1,13 +1,5 @@
-const mysql = require('mysql2')
-const inquirer = require('inquirer')
-require('dotenv').config();
-
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
-  });
+const inquirer = require('inquirer');
+const queryFunctions = require('./queryFunctions')
 
   const questions = [
     {
@@ -31,14 +23,7 @@ const connection = mysql.createConnection({
     inquirer.prompt(questions).then((answers) => {
       switch (answers.action) {
         case 'View all employees':
-          // getAllEmployees()
-          (connection.query(
-            'SELECT * FROM employee',
-            function(err, results, fields) {
-              console.table(results)
-              main();
-            }
-          ));
+          queryFunctions.getAllEmployees()
           break;
         case 'Add employee':
           // Code to add employee
@@ -67,13 +52,12 @@ const connection = mysql.createConnection({
   }
   
   main();
-
-  // let allEmployees = (connection.query(
-  //   'SELECT * FROM employee',
-  //   function(err, results, fields) {
-  //     console.log(results);
-  //   }
-  // ));
+  // connection.promise().query("SELECT * FROM employee")
+  // .then( ([rows,fields]) => {
+  //   console.table(rows);
+  // })
+  // .catch(console.table)
+  // .then( () => connection.end());
 
   // console.log(allEmployees)
   
