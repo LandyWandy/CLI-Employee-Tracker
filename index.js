@@ -27,6 +27,56 @@ const connection = mysql.createConnection({
     }
   ];
 
+  function main() {
+    inquirer.prompt(questions).then((answers) => {
+      switch (answers.action) {
+        case 'View all employees':
+          // getAllEmployees()
+          (connection.query(
+            'SELECT * FROM employee',
+            function(err, results, fields) {
+              console.table(results)
+              main();
+            }
+          ));
+          break;
+        case 'Add employee':
+          // Code to add employee
+          break;
+        case 'Update employee role':
+          // Code to update employee role
+          break;
+        case 'View all roles':
+          // Code to view all roles
+          break;
+        case 'Add role':
+          // Code to add role
+          break;
+        case 'View all departments':
+          // Code to view all departments
+          break;
+        case 'Add department':
+          // Code to add department
+          break;
+        case 'Quit':
+          console.log('Thank you for using Employee Tracker!')
+          process.exit();
+          break;
+      }
+    });
+  }
+  
+  main();
+
+  // let allEmployees = (connection.query(
+  //   'SELECT * FROM employee',
+  //   function(err, results, fields) {
+  //     console.log(results);
+  //   }
+  // ));
+
+  // console.log(allEmployees)
+  
   // connection.query(
   //   'SELECT * FROM employee WHERE manager_id = 14',
   //   function(err, results, fields) {
