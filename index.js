@@ -26,7 +26,33 @@ const queryFunctions = require('./queryFunctions')
           queryFunctions.getAllEmployees(main)
           break;
         case 'Add employee':
-          queryFunctions.addEmployee()
+          async function getRoles(){let roles = await queryFunctions.getRolesForInquirer()
+          inquirer.prompt([
+            {
+              type: 'input',
+              name: 'employeeFirstName',
+              message: `Enter the employee's first name:`,
+            },
+            {
+              type: 'input',
+              name: 'employeeLastName',
+              message: `Enter the employee's last name:`,
+            },
+            {
+              type: 'list',
+              name: 'employeeRole',
+              message: `Choose the employee's role:`,
+              choices: roles
+            },
+            {
+              type: 'list',
+              name: 'employeeManager',
+              message: `Choose the employee's manager:`,
+              choices: [
+                ''
+              ]
+            }])}
+            getRoles()
           break;
         case 'Update employee role':
           // Code to update employee role

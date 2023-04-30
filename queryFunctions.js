@@ -36,4 +36,12 @@ const connection = mysql.createConnection({
   function addDepartment(departmentName, callback) {connection.promise().query("INSERT INTO department VALUES(default, ?)", departmentName)
   .then( () => callback())}
 
-  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment};
+function getRolesForInquirer() {
+    return connection.promise().query("SELECT title FROM role")
+    .then(([rows, fields]) => {
+      return rows.map(row => row.title);
+    })
+    .catch(console.log);
+}
+
+  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment, getRolesForInquirer};
