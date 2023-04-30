@@ -49,11 +49,19 @@ const connection = mysql.createConnection({
       return rows.map(rows => rows.full_name)})
     .catch(console.log);
 }
+
   async function getDepartmentForInquirer() {
     return connection.promise().query("SELECT name FROM department")
     .then(([rows, fields]) => {
       return rows.map(rows => rows.name)})
     .catch(console.log);
   }
+  
+  async function getFullNameForInquirer() {
+    return connection.promise().query("SELECT CONCAT(first_name,' ',last_name) AS full_name FROM employee")
+    .then(([rows, fields]) => {
+      return rows.map(rows => rows.full_name)})
+    .catch(console.log);
+}
 
-  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment, getRolesForInquirer, getManagersForInquirer , getDepartmentForInquirer };
+  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment, getRolesForInquirer, getManagersForInquirer , getDepartmentForInquirer , getFullNameForInquirer};

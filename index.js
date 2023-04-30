@@ -52,11 +52,32 @@ const queryFunctions = require('./queryFunctions')
               name: 'employeeManager',
               message: `Choose the employee's manager:`,
               choices: employeeManagers
-            }])}
+            }]).then(() => {
+              main()
+            })};
             waitForManagerAndRole();
           break;
         case 'Update employee role':
-          // Code to update employee role
+          // Still needs to add to Database
+          async function waitForNameAndRole(){
+            let fullNames = await queryFunctions.getFullNameForInquirer();
+            let roles = await queryFunctions.getRolesForInquirer();
+            inquirer.prompt([
+              {
+                type: 'list',
+                name: 'employeeToChangeRole',
+                message: `Enter the employee whose role you want to change:`,
+                choices: fullNames
+              },
+              {
+                type: 'list',
+                name: 'employeesNewRole',
+                message: `Enter the role employee's new role:`,
+                choices: roles
+              }]).then(() => {
+                main()
+              })};
+              waitForNameAndRole();
           break;
         case 'View all roles':
           queryFunctions.getAllRoles(main);
