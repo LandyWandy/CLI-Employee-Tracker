@@ -36,12 +36,24 @@ const connection = mysql.createConnection({
   function addDepartment(departmentName, callback) {connection.promise().query("INSERT INTO department VALUES(default, ?)", departmentName)
   .then( () => callback())}
 
-function getRolesForInquirer() {
+  async function getRolesForInquirer() {
     return connection.promise().query("SELECT title FROM role")
     .then(([rows, fields]) => {
-      return rows.map(row => row.title);
-    })
+      return rows.map(row => row.title)})
     .catch(console.log);
 }
 
-  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment, getRolesForInquirer};
+  async function getManagersForInquirer() {
+    return connection.promise().query("SELECT CONCAT(first_name,' ',last_name) AS full_name FROM employee WHERE manager_id IS NULL")
+    .then(([rows, fields]) => {
+      return rows.map(rows => rows.full_name)})
+    .catch(console.log);
+}
+  async function getDepartmentForInquirer() {
+    return connection.promise().query("SELECT name FROM department")
+    .then(([rows, fields]) => {
+      return rows.map(rows => rows.name)})
+    .catch(console.log);
+  }
+
+  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment, getRolesForInquirer, getManagersForInquirer , getDepartmentForInquirer };

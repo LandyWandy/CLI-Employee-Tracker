@@ -26,7 +26,10 @@ const queryFunctions = require('./queryFunctions')
           queryFunctions.getAllEmployees(main)
           break;
         case 'Add employee':
-          async function getRoles(){let roles = await queryFunctions.getRolesForInquirer()
+          // Still needs to add to Database
+          async function waitForManagerAndRole(){
+            let roles = await queryFunctions.getRolesForInquirer()
+            let employeeManagers = await queryFunctions.getManagersForInquirer()
           inquirer.prompt([
             {
               type: 'input',
@@ -48,20 +51,40 @@ const queryFunctions = require('./queryFunctions')
               type: 'list',
               name: 'employeeManager',
               message: `Choose the employee's manager:`,
-              choices: [
-                ''
-              ]
+              choices: employeeManagers
             }])}
-            getRoles()
+            waitForManagerAndRole();
           break;
         case 'Update employee role':
           // Code to update employee role
           break;
         case 'View all roles':
-          queryFunctions.getAllRoles(main)
+          queryFunctions.getAllRoles(main);
           break;
         case 'Add role':
-          // Code to add role
+          // Still needs to add to Database
+          async function waitForDepartments(){
+            let departments = await queryFunctions.getDepartmentForInquirer()
+            inquirer.prompt([
+              {
+                type: 'input',
+                name: 'addedRole',
+                message: `Enter the new role:`,
+              },
+              {
+                type: 'input',
+                name: 'addedSalary',
+                message: `Enter the new role's salary:`,
+              },
+              {
+                type: 'list',
+                name: 'addRolesDepartment',
+                message: `Which department does this role belong to:`,
+                choices: departments
+              }]).then(() => {
+                main()
+              })};
+              waitForDepartments();
           break;
         case 'View all departments':
           queryFunctions.getAllDepartments(main)
