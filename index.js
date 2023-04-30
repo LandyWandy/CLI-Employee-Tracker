@@ -23,26 +23,34 @@ const queryFunctions = require('./queryFunctions')
     inquirer.prompt(questions).then((answers) => {
       switch (answers.action) {
         case 'View all employees':
-          queryFunctions.getAllEmployees()
+          queryFunctions.getAllEmployees(main)
           break;
         case 'Add employee':
-          // Code to add employee
+          queryFunctions.addEmployee()
           break;
         case 'Update employee role':
           // Code to update employee role
           break;
         case 'View all roles':
-          // Code to view all roles
+          queryFunctions.getAllRoles(main)
           break;
         case 'Add role':
           // Code to add role
           break;
         case 'View all departments':
-          // Code to view all departments
+          queryFunctions.getAllDepartments(main)
           break;
-        case 'Add department':
-          // Code to add department
-          break;
+          case 'Add department':
+            inquirer.prompt([
+              {
+                type: 'input',
+                name: 'departmentName',
+                message: 'Enter the name of the department:',
+              }
+            ]).then((answers) => {
+              queryFunctions.addDepartment(answers.departmentName, main)
+            });
+            break;
         case 'Quit':
           console.log('Thank you for using Employee Tracker!')
           process.exit();
@@ -50,34 +58,5 @@ const queryFunctions = require('./queryFunctions')
       }
     });
   }
-  
-  main();
-  // connection.promise().query("SELECT * FROM employee")
-  // .then( ([rows,fields]) => {
-  //   console.table(rows);
-  // })
-  // .catch(console.table)
-  // .then( () => connection.end());
 
-  // console.log(allEmployees)
-  
-  // connection.query(
-  //   'SELECT * FROM employee WHERE manager_id = 14',
-  //   function(err, results, fields) {
-  //     console.log(results); // results contains rows returned by server
-  //   }
-  // );
-  // inquirer
-  // .prompt([
-  //   What
-  // ])
-  // .then((answers) => {
-  //   // Use user feedback for... whatever!!
-  // })
-  // .catch((error) => {
-  //   if (error.isTtyError) {
-  //     // Prompt couldn't be rendered in the current environment
-  //   } else {
-  //     // Something else went wrong
-  //   }
-  // });
+  main();

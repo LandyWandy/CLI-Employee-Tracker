@@ -8,19 +8,32 @@ const connection = mysql.createConnection({
     database: process.env.DB_DATABASE
   });
 
-  function getAllEmployees() {connection.promise().query("SELECT e.id, e.first_name, e.last_name, role.title, role.salary, department.name, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employee e INNER JOIN role ON role.id = e.role_id INNER JOIN department ON department.id = role.department_id LEFT JOIN employee m ON e.manager_id = m.id")
-  .then( ([rows,fields]) => {console.table(rows);})
-  .catch(console.table)
-  .then( () => connection.end())};
+  function getAllEmployees(callback) {
+    connection.promise().query("SELECT e.id, e.first_name, e.last_name, role.title, role.salary, department.name, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employee e INNER JOIN role ON role.id = e.role_id INNER JOIN department ON department.id = role.department_id LEFT JOIN employee m ON e.manager_id = m.id")
+      .then(([rows, fields]) => {
+        console.table(rows)
+        callback()})
+      .catch(console.table);
+  }
+  
+  function getAllRoles(callback) {connection.promise().query("SELECT role.id, role.title, department.name AS department, role.salary FROM role INNER JOIN department ON department.id = role.department_id")
+  .then(([rows, fields]) => {
+    console.table(rows)
+    callback()})
+  .catch(console.table);
+}
 
-  function getAllRoles() {connection.promise().query("")
-  .then( ([rows,fields]) => {console.table(rows);})
-  .catch(console.table)
-  .then( () => connection.end())};
+  function getAllDepartments(callback) {connection.promise().query("SELECT id, name FROM department")
+  .then(([rows, fields]) => {
+    console.table(rows)
+    callback()})
+  .catch(console.table);
+}
 
-  function getAllDepartments() {connection.promise().query("")
-  .then( ([rows,fields]) => {console.table(rows);})
-  .catch(console.table)
-  .then( () => connection.end())};
+  function addEmployee(callback) {connection.promise().query("INSERT INTO employee VALUES(default, ?, ?)")
+  .then( () => callback())};
 
-  module.exports = { getAllEmployees , getAllRoles, getAllDepartments};
+  function addDepartment(departmentName, callback) {connection.promise().query("INSERT INTO department VALUES(default, ?)", departmentName)
+  .then( () => callback())}
+
+  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment};
