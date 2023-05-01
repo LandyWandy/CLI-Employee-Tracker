@@ -57,7 +57,6 @@ const queryFunctions = require('./queryFunctions')
             waitForManagerAndRole();
           break;
         case 'Update employee role':
-          // Still needs to add to Database
           async function waitForNameAndRole(){
             let fullNames = await queryFunctions.getFullNameForInquirer();
             let roles = await queryFunctions.getRolesForInquirer();
@@ -101,8 +100,8 @@ const queryFunctions = require('./queryFunctions')
                 name: 'addRolesDepartment',
                 message: `Which department does this role belong to:`,
                 choices: departments
-              }]).then(() => {
-                main()
+              }]).then((answers) => {
+                queryFunctions.addRole(answers.addRolesDepartment, answers.addedRole, answers.addedSalary, main)
               })};
               waitForDepartments();
           break;
