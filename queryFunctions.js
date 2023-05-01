@@ -30,7 +30,12 @@ const connection = mysql.createConnection({
   .catch(console.table);
 }
 
-  function addEmployee(callback) {connection.promise().query("INSERT INTO employee VALUES(default, ?, ?)")
+  async function addEmployee(employeeTitle, employeeManager, employeeFirstName, employeeLastName, callback){
+    const [roleRows] = await connection.promise().query(`SELECT id FROM role WHERE title = '${employeeTitle}'`)
+    const [managerRows] = await connection.promise().query(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) LIKE '%${employeeManager}%'`)  
+    const role_id = roleRows[0].id;
+    const manager_id = managerRows[0].id;
+connection.promise().query(`INSERT INTO employee VALUES(default, '${employeeFirstName}', '${employeeLastName}', ${role_id}, ${manager_id} )`)
   .then( () => callback())};
 
   function addDepartment(departmentName, callback) {connection.promise().query("INSERT INTO department VALUES(default, ?)", departmentName)
@@ -56,7 +61,7 @@ const connection = mysql.createConnection({
       return rows.map(rows => rows.name)})
     .catch(console.log);
   }
-  
+
   async function getFullNameForInquirer() {
     return connection.promise().query("SELECT CONCAT(first_name,' ',last_name) AS full_name FROM employee")
     .then(([rows, fields]) => {

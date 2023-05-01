@@ -26,7 +26,6 @@ const queryFunctions = require('./queryFunctions')
           queryFunctions.getAllEmployees(main)
           break;
         case 'Add employee':
-          // Still needs to add to Database
           async function waitForManagerAndRole(){
             let roles = await queryFunctions.getRolesForInquirer()
             let employeeManagers = await queryFunctions.getManagersForInquirer()
@@ -52,8 +51,8 @@ const queryFunctions = require('./queryFunctions')
               name: 'employeeManager',
               message: `Choose the employee's manager:`,
               choices: employeeManagers
-            }]).then(() => {
-              main()
+            }]).then((answers) => {
+              queryFunctions.addEmployee(answers.employeeRole, answers.employeeManager, answers.employeeFirstName, answers.employeeLastName, main)
             })};
             waitForManagerAndRole();
           break;
