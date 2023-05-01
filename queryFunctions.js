@@ -69,4 +69,12 @@ connection.promise().query(`INSERT INTO employee VALUES(default, '${employeeFirs
     .catch(console.log);
 }
 
-  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment, getRolesForInquirer, getManagersForInquirer , getDepartmentForInquirer , getFullNameForInquirer};
+    async function updateRole(employeeToRoleChange, employeesNewRole, callback) {
+        [employeeToChangeRow] = await connection.promise().query(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) LIKE '%${employeeToRoleChange}%'`);
+        [employeesNewRoleRow] = await connection.promise().query(`SELECT id FROM role WHERE title = '${employeesNewRole}'`);
+        newRoleId = employeesNewRoleRow[0].id;
+        employeeToChange = employeeToChangeRow[0].id;
+        connection.promise().query(`UPDATE employee SET role_id = ${newRoleId} WHERE id = ${employeeToChange}`)
+    .then( () => callback())}
+
+  module.exports = { getAllEmployees , getAllRoles , getAllDepartments , addEmployee, addDepartment, getRolesForInquirer, getManagersForInquirer , getDepartmentForInquirer , getFullNameForInquirer , updateRole};

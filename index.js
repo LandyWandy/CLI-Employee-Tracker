@@ -73,8 +73,8 @@ const queryFunctions = require('./queryFunctions')
                 name: 'employeesNewRole',
                 message: `Enter the role employee's new role:`,
                 choices: roles
-              }]).then(() => {
-                main()
+              }]).then((answers) => {
+                queryFunctions.updateRole(answers.employeeToChangeRole,answers.employeesNewRole, main)
               })};
               waitForNameAndRole();
           break;
