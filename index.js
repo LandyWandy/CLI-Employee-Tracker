@@ -81,7 +81,6 @@ const queryFunctions = require('./queryFunctions')
           queryFunctions.getAllRoles(main);
           break;
         case 'Add role':
-          // Still needs to add to Database
           async function waitForDepartments(){
             let departments = await queryFunctions.getDepartmentForInquirer()
             inquirer.prompt([

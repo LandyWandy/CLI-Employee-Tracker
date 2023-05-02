@@ -24,7 +24,6 @@ npm install
 ```
 3. Setup your `.env` file to include your MySQL credentials:
 ```
-DB_HOST=your_host
 DB_USER=your_user
 DB_PASSWORD=your_password
 DB_DATABASE=your_database
